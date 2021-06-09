@@ -187,6 +187,7 @@ const Home = ({ navigation }) => {
     }
 
     function renderDots() {
+        const dotPosition = Animated.divide(newSeasonScrollX, SIZES.width)
         return (
             <View style={{
                 marginTop: SIZES.padding,
@@ -196,21 +197,96 @@ const Home = ({ navigation }) => {
             }}
             >
                 {dummyData.newSeason.map((item, index) => {
+                    const opacity = dotPosition.interpolate({
+                        inputRange: [index - 1, index, index + 1],
+                        outputRange: [0.3, 1, 0.3],
+                        extrapolate: "clamp"
+                    });
+
+                    const dotWidth = dotPosition.interpolate({
+                        inputRange: [index - 1, index, index + 1],
+                        outputRange: [6, 20, 6],
+                        extrapolate: "clamp"
+                    });
+
+                    const dotColor = dotPosition.interpolate({
+                        inputRange: [index - 1, index, index + 1],
+                        outputRange: [COLORS.lightGray, COLORS.primary, COLORS.lightGray],
+                        extrapolate: "clamp"
+                    });
+
                     return (
-                        <View
+                        <Animated.View
                             key={`dot-${index}`}
+                            opacity={opacity}
                             style={{
                                 borderRadius: SIZES.radius,
                                 marginHorizontal: 6,
-                                width: 8,
+                                width: dotWidth,
                                 height: 8,
-                                backgroundColor:COLORS.primary
+                                backgroundColor:dotColor
                             }}
-                        ></View>
+                        ></Animated.View>
                     )
                 })}
             </View>
         )
+    }
+
+    function renderContinueWatchingSection() {
+        return (
+			<View
+				style={{
+					marginTop: SIZES.padding + 8,
+					/* flexDirection: "row",
+					alignItems: "center", */
+				}}
+			>
+				{/* Header */}
+				<View
+					style={{
+                        flexDirection: "row",
+                        paddingHorizontal: SIZES.padding,
+						alignItems: "center",
+						/* justifyContent: "center", */
+					}}
+				>
+					<Text
+						style={{ flex:1, color: COLORS.white, ...FONTS.h3 /* fontSize: SIZES.body3 */ }}
+					>
+                        Continue Watching
+					</Text>
+                    <Image
+                        source={icons.right_arrow}
+                        style={{
+                            width: 16,
+                            height: 16,
+                            tintColor: COLORS.primary
+                        }}
+                    />
+                </View>
+                
+                {/* List */}
+                <FlatList
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{
+                        marginTop: SIZES.padding
+                    }}
+                    data={dummyData.continueWatching}
+                    keyExtractor={item => `${item.id}`}
+                    renderItem={({ item, index }) => {
+                        return (
+                            <TouchableWithoutFeedback
+                                onPress={() => navigation.navigate("MovieDetail", {selectedMovie: item})}
+                            >
+                                <View></View>
+                            </TouchableWithoutFeedback>
+                        )
+                    }}
+                />
+			</View>
+		);
     }
 
     return (
@@ -229,6 +305,7 @@ const Home = ({ navigation }) => {
             >
                 {renderNewSeasonSection()}
                 {renderDots()}
+                {renderContinueWatchingSection()}
             </ScrollView>
         </SafeAreaView>
     )
