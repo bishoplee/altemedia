@@ -131,7 +131,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.moviestreamingapp"
+        applicationId "com.bluematrix.altemedia"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
