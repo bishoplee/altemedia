@@ -5,9 +5,9 @@ export const COLORS = {
     primary: "#FF002E", // Red
 
     white: "#fff",
-    black: "#333",
+    black: "#242526",
     blue: "#4096FE",
-    gray: "#464646",
+    gray: "#545454",
     gray1: "#363636",
     lightGray: "#dedede",
     transparentWhite: 'rgba(255, 255, 255, 0.2)',
